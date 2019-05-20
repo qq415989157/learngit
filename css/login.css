@@ -194,6 +194,7 @@ body {
 }
 .yanzhengma_show{
     margin-bottom: 15px;
+    list-style: none;
 }
 .yanzhengma_show .reg_in {
     width: 298px;
