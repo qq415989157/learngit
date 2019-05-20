@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>寺库-注册</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/regsiter.css">
+    <script src="../js/jquery-3.4.0.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/gVerify.js"></script>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div id="header">
+        <div class="container clearfix">
+            <div class="con_left fl">
+                <img src="../img/logo.png" alt="">
+            </div>
+            <div class="con_right fr">
+                <a href="../index.min.html" target="_blank">寺库首页</a>
+                <a href="javascript:;">收藏寺库</a>
+                <a href="javascript:">寺库APP</a>
+            </div>
+        </div>
+    </div>
+    <!-- 中部 -->
+    <div id="content">
+        <div class="reg_box clearfix">
+            <div class="reg_center">
+                <div class="tab_phone">
+                    <ul class="clearfix">
+                        <li class="clearfix">
+                            <div class="regTips clearfix">
+                                <span class="t_right">用户名</span>
+                                <div class="regName_tips focus fr reg_userName f14">请输入手机号或者邮箱</div>
+                            </div>
+                            <div class="login_tips fl">
+                                <input id="umeInput" class="fl reg_int reg_in " type="text" tabindex="1">
+                            </div>
+                        </li>
+                        <li class="yanzhengma_show clearfix" style="display:none;">
+                            <div class="regTips clearfix">
+                                <span class="t_right">验证码</span>
+                            </div>
+                            <input id="kaptcha" class="fl reg_ins reg_in" type="text" tabindex="2">
+                            <a class="fl" href="javascript:;" id="v_container">
+                                <!-- <canvas id="verifyCanvas" width="80" height="40" style="cursor: pointer;"></canvas> -->
+                            </a>
+                            <a class="change fl" onclick="register.changenCheckCode()" href="javascript:;">换一换</a>
+                        </li>
+                        <li class="clearfix verify_code_show" style="display: none;">
+                            <div class="verifyCodeDiv clearfix">
+                                <input id="verifyCode" style="width:115px; height:16px; padding:12px 5px;"
+                                    class="fl reg_int reg_in" type="text" tabindex="3">
+                                <div class="fl" style="width:140px;margin-top:8px;margin-left:4px;">
+                                    <a class="btnStyle01" id="verifyCodeBtn" href="javascript:;">获取短信验证码</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="regTips clearfix">
+                                <span class="t_right">密码</span>
+                                <div class="regName_tips focus fr" id="passError" style="display:none"></div>
+                            </div>
+                            <div class="login_tips fl">
+                                <input id="passwordInput" class="fl reg_int reg_in" type="password" tabindex="4">
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="regTips clearfix">
+                                <span class="t_right">确认密码</span>
+                                <div class="regName_tips focus fr" id="passAgainError" style="display:none"></div>
+                            </div>
+                            <div class="login_tips fl">
+                                <input id="passwordagain" class="fl reg_int reg_in" type="password" tabindex="5">
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="regTips clearfix">
+                                <span class="t_right" style="width:100px;">
+                                    <input name="" type="checkbox" class="guibing" value="">
+                                    贵宾邀请码</span>
+                                <div class="regName_tips blur fr " style="width:150px;" id="invite_error"></div>
+                            </div>
+                            <div class="login_tips fl guibingma" style="display:none;">
+                                <input class="fl reg_int reg_in" id="inviteCode" type="text" tabindex="6">
+                                <div class="regName_tips fl blur" style="display: none;">此手机号已被注册！</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="btn_reg_submit">
+                        <input id="regSubmit" class="login_btn" name="" type="button" value="立即注册" tabindex="7">
+                        <div class="f14" style="padding-top: 5px;"></div>
+                        <p class="protocol_check" style="clear:both;">
+                            <label class="serviceCheck">
+                                <input type="checkbox" checked="checked" id="readProtocol">我已阅读并同意
+                            </label>
+                            <a href="javascript:;">《寺库网用户注册协议》</a>
+                        </p>
+                        <div class="iperror f14 blur" id="protocol" style="display: none;">请接受服务条款</div>
+                        <div class="msg clearfix padTop30">
+
+                            <span class="fl">已经是寺库会员？<a href="../asd.html" target="_blank"
+                                    class="active">立即登录</a></span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var nameOk = false;
+        var yanzhengma = false;
+        var duanxinOk = false;
+        var passwordInputOk = false;
+        var passwordagainOk = false;
+        var readProtocolOk = false;
+        var duanxinyzm;
+        // 用户名正则验证
+        $('#umeInput').on('blur', function () {
+            let name = $('#umeInput').val();
+            if (name == "") {
+                $(".reg_userName").html("请输入正确的手机号或者邮箱").addClass('blur').removeClass("focus f14").show();
+                $('#umeInput').addClass('blur_error');
+                $('#umeInput').focus(function () {
+                    $(".reg_userName").html("请输入手机号或者邮箱").addClass('focus').removeClass('blur');
+                });
+                nameOk = false;
+                return false;
+
+            } else {
+                let emailreg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+                let phonereg = /^1[3-9]\d{9}$/;
+                let emailres = emailreg.test(name);
+                let phoneres = phonereg.test(name);
+
+                if (emailres) {
+                    $(".reg_userName").hide();
+                    $('#umeInput').removeClass('blur_error');
+                    $('.yanzhengma_show').css('display', 'none'); //图片验证码框出现
+                    $('.verify_code_show').css('display', 'none');
+                    // 用户名是否重复验证
+                    $.ajax({
+                        type: "get",
+                        url: "../api/checkname.php",
+                        async: true,
+                        data: {
+                            name: $('#umeInput').val()
+                        },
+                        success: function (str) {
+                            if (str == 'yes') {
+                                nameOk = true;
+                            } else {
+                                $(".reg_userName").html("用户名已存在").addClass('blur')
+                                    .removeClass("focus f14")
+                                    .show();
+                                $('#umeInput').addClass('blur_error');
+                                nameOk = false;
+                            }
+                        }
+                    });
+                    return false;
+                } else if (phoneres) {
+                    $(".reg_userName").hide();
+                    $('#umeInput').removeClass('blur_error');
+                    $('.yanzhengma_show').css('display', 'list-item'); //图片验证码框出现
+                    $('.verify_code_show').css('display', 'list-item'); //短信验证码框出现
+                    $.ajax({
+                        type: "get",
+                        url: "../api/checkname.php",
+                        async: true,
+                        data: {
+                            name: $('#umeInput').val()
+                        },
+                        success: function (str) {
+                            if (str == 'yes') {
+                                nameOk = true;
+                            } else {
+                                $(".reg_userName").html("用户名已存在").addClass('blur')
+                                    .removeClass("focus f14")
+                                    .show();
+                                $('#umeInput').addClass('blur_error');
+                                nameOk = false;
+                            }
+                        }
+                    });
+                    return false;
+                } else {
+                    $(".reg_userName").html("请输入正确的手机号或者邮箱").addClass('blur').removeClass("focus f14")
+                        .show();
+                    $('#umeInput').addClass('blur_error');
+                    $('#umeInput').focus(function () {
+                        $(".reg_userName").html("请输入手机号或者邮箱").addClass('focus f14').removeClass(
+                            'blur');
+                    });
+                    $('.yanzhengma_show').css('display', 'none'); //图片验证码框出现
+                    $('.verify_code_show').css('display', 'none');
+                    nameOk = false;
+                    return false;
+                }
+            }
+        });
+        // 生成验证码图片节点
+        var verifyCode = new GVerify("v_container");
+        // 验证码验证
+        // verifyCode.validate(code);验证图形验证码，参数code为用户输入的验证码，返回值：正确：true,错误：false
+        $('#kaptcha').on('blur', (function () {
+            let isOk = verifyCode.validate($('#kaptcha').val());
+            console.log(isOk);
+            if (isOk) {
+                $(".reg_userName").hide();
+                $('#kaptcha').removeClass('blur_error');
+                yanzhengma = true;
+                return false;
+            } else {
+                $(".reg_userName").html("图片验证码错误").addClass('blur').removeClass("focus f14")
+                    .show();
+                $('#kaptcha').addClass('blur_error');
+                yanzhengma = false;
+                return false;
+            }
+        }));
+        // 60内不能重复发送 
+        $(document).ready(function () {
+            var ordertime = 60; //设置再次发送验证码等待时间
+            var timeleft = ordertime;
+            var btn = $("#verifyCodeBtn");
+            var phone = $("#umeInput");
+
+            //计时函数
+            // style="cursor: text;"
+            function timeCount() {
+                // console.log(btn);
+                timeleft -= 1
+                if (timeleft > 0) {
+                    btn.html(timeleft + " 秒后重发");
+                    setTimeout(timeCount, 1000);
+                    btn.css("cursor", 'text');
+                } else {
+                    btn.html("重新发送");
+                    timeleft = ordertime; //重置等待时间
+                    btn.removeAttr("style");
+                }
+            }
+
+            //事件处理函数
+            btn.on("click", function () {
+                // 发送短信验证码
+                if (yanzhengma) {
+                    $(".reg_userName").hide();
+                    if (btn.css("cursor") == 'text') {
+                        return;
+                    } else {
+                        console.log($("#umeInput").val());
+                        //此处可添加 ajax请求 向后台发送 获取验证码请求
+                        $.ajax({
+                            type: 'post',
+                            url: '../api/duanxin.php',
+                            data: 'userphone=' + $("#umeInput").val(),
+                            success: function (str) {
+                                // console.log(str);//{"phonecode":386660,"message":{"reason":"操作成功","result":{"sid":"1720514204230042900","fee":1,"count":1},"error_code":0}}
+
+                                var arr = JSON.parse(str);
+                                duanxinyzm = arr.phonecode;
+
+                            }
+                        });
+                        // var str =
+                        //     '{"phonecode":386660,"message":{"reason":"操作成功","result":{"sid":"1720514204230042900","fee":1,"count":1},"error_code":0}}';
+                        // var arr = JSON.parse(str);
+                        // console.log(arr.phonecode);
+                        // duanxinyzm = arr.phonecode;
+                        timeCount(this);
+                        return false;
+                    }
+                } else {
+                    $(".reg_userName").html("图片验证码错误").addClass('blur')
+                        .removeClass("focus f14")
+                        .show();
+                }
+            });
+        });
+
+
+
+        //  短信验证码验证
+        $('#verifyCode').on('blur', function () {
+            if (duanxinyzm == $('#verifyCode').val()) {
+                duanxinOk = true;
+                $(".reg_userName").hide();
+                return false;
+            } else {
+                $(".reg_userName").html("短信验证码错误").addClass('blur')
+                    .removeClass("focus f14")
+                    .show();
+                duanxinOk = false;
+                return false;
+            }
+        });
+
+        // 密码验证
+        $('#passwordInput').on('blur', (function () {
+            let psw = $('#passwordInput').val();
+            if (psw) { //判断是否为空
+                var reg = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})$/;
+                var res = reg.test(psw);
+                if (res) {
+                    // 验证通过
+                    $('#passError').hide();
+                    $('#passwordInput').removeClass('blur_error');
+                    passwordInputOk = true;
+                    return false;
+                } else {
+                    $('#passError').addClass('blur').html('密码必须字母开头，长度6-20个字母、数字、下划线').show();
+                    $('#passwordInput').addClass('blur_error');
+                    $('#passwordInput').focus(function () {
+                        $('#passError').hide();
+                        passwordInputOk = false;
+                        return false;
+                    });
+                }
+            } else {
+                $('#passError').addClass('blur').html('密码不能为空').show();
+                $('#passwordInput').addClass('blur_error');
+                $('#passwordInput').focus(function () {
+                    $('#passError').hide();
+                    passwordInputOk = false;
+                    return false;
+                });
+            }
+        }));
+        // 确认密码验证
+        $('#passwordagain').on('blur', function () {
+            if ($('#passwordagain').val() == $('#passwordInput').val()) {
+                $('#passwordagain').removeClass('blur_error')
+                passwordagainOk = true;
+                return false;
+
+            } else {
+                $("#passAgainError").html("请再次确认密码").addClass('blur').show();
+                $('#passwordagain').addClass('blur_error');
+                $('#passwordagain').focus(function () {
+                    $("#passAgainError").removeClass('blur').hide();
+                });
+                passwordagainOk = false;
+                return false;
+
+            }
+        });
+
+        //协议勾选判断
+        if ($('#readProtocol').is(':checked')) {
+            readProtocolOk = true;
+        } else {
+            readProtocolOk = false;
+        }
+        //点击注册
+        // var nameOk = false;
+        // var yanzhengma = false;
+        // var duanxinOk = true;
+        // var passwordInputOk = false;
+        // var passwordagainOk = false;
+        // var readProtocolOk = false;
+        $('#regSubmit').on('click', function () {
+            if (nameOk == true && yanzhengma == true && duanxinOk == true && passwordInputOk == true &&
+                passwordagainOk == true && readProtocolOk == true) {
+                $.ajax({
+                    type: 'post',
+                    url: '../api/reg.php',
+                    data: {
+                        name: $('#umeInput').val(),
+                        psw: $('#passwordInput').val(),
+                        time: Date()
+                    },
+                    success: function (str) {
+                        if (str) {
+                            alert('注册成功！');
+                            location.href = 'login.html';
+                        } else {
+                            $(function () {
+                                $(window).html('对不起，系统繁忙');
+                            });
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+    </script>
+</body>
+
+</html>

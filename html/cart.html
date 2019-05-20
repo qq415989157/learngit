@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/cart.css">
+    <script src="../js/common.js"></script>
+    <script src="../js/jquery-3.4.0.js"></script>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="carHeader">
+        <div class="carHeaderCon clearfix">
+            <div class="logo fl">
+                <a href="http://www.secoo.com" target="_blank"> <img src="../img/logo.png" width="30" height="70">
+                </a>
+            </div>
+            <div class="fr">
+                <img id="cart_icon" width="350" height="70" src="../img/c_05.jpg">
+            </div>
+        </div>
+    </div>
+    <!-- 内容 -->
+    <div class="center">
+        <div class="centerBox">
+            <!-- 初始化商品列表数据 -->
+            <div class="cartNav clearfix">
+                <div class="fl navLogin">
+
+                </div>
+            </div>
+            <!-- 表头数据 -->
+            <div class="cartBox" style=" display:block;">
+                <div class="cartSlist">
+                    <table cellspacing="0" cellpadding="0" border="0" class="carTable">
+                        <thead>
+                            <tr>
+                                <th width="75"><input name="choseAll" type="checkbox" id="choseAll" checked=""><label
+                                        for="choseAll">全选</label></th>
+                                <th width="355" colspan="2">商品名称</th>
+                                <th width="96">发货站</th>
+                                <th width="96">会员价</th>
+                                <th width="140">数量</th>
+                                <th width="110">金额小计</th>
+                                <th width="110">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                            <!-- 商品明细列表加载 -->
+                            <!-- <tr class="addChecked" name="cartRow" itemkey="45570795_0" productid="45570795"
+                                quantity="2">
+                                <td><input class="checkBox" value="45570795_0" name="promotionId0" id="choseItem"
+                                        type="checkbox" onclick="cartJS.choseItem(this)" checked=""></td>
+                                <td width="97" valign="top">
+                                    <div class="cartPic fl padRight15">
+                                        <a href="http://item.secoo.com/45570795.shtml?source=cart" target="_blank"><img
+                                                src="http://pic.secoo.com/product/80/80/55/56/78f67210f264435ea46628a2725c0523.jpg"
+                                                alt="【19春夏新品】Champion/Champion  男女新款圆领草签刺绣logo休闲短袖男士运动T恤 T1919G 549465"
+                                                width="80" height="80"></a>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div class="cartNames fl">
+                                        <p class="namePro"><a href="http://item.secoo.com/45570795.shtml?source=cart"
+                                                target="_blank">【19春夏新品】Champion/Champion 男女新款圆领草签刺绣logo休闲短袖男士运动T恤
+                                                T1919G 549465</a></p>
+                                    </div>
+                                    <div class="cartNames fl" style="overflow:visible">
+                                        <p class="namePro color999 pad45">
+                                            颜色：白&nbsp;&nbsp;
+                                            尺码：XL&nbsp;&nbsp;
+
+                                        </p>
+
+
+                                    </div>
+                                </td>
+                                <td valign="top">美国</td>
+                                <td valign="top"><span class="rmb">¥</span>174</td>
+                                <td valign="top">
+                                    <div class="countNum clearfix">
+                                        <div class="cPlus fl" action="decrease" onclick="cartJS.modifyQuantity(this);">-
+                                        </div>
+                                        <div class="cInput fl"><input class="Num" type="text" name="quantity"
+                                                action="goto" value="2" onblur="cartJS.modifyQuantity(this);"
+                                                onkeydown="if(event.keyCode==13) cartJS.modifyQuantity(this);"></div>
+                                        <div class="cMinus fl" action="increase" onclick="cartJS.modifyQuantity(this);">
+                                            +</div>
+                                    </div>
+
+                                </td>
+                                <td valign="top">
+
+                                    <strong class="colore93"><span class="rmb colore93">¥</span>
+                                        348元
+                                    </strong>
+
+
+                                </td>
+                                <td valign="top"><a href="###" class="del" onclick="cartJS.delItem(this);"
+                                        name="deleteRow">删除</a></td>
+                            </tr> -->
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- 引入商品结算页模板 -->
+                <div class="cartPrice">
+                    <div class="cartAno">
+                        <div class="ano01 fl">
+                            <input name="choseAll2" type="checkbox" checked="" id="choseAll2"><label
+                                for="choseAll2">全选</label>
+                        </div>
+
+                        <div class="ano02 fl delSp"><a href="javascript:;">删除选中商品</a></div>
+
+                    </div>
+                    <p></p>
+                    <p class="totalPriceBottom">商品金额总计（不含税金和运费）：<span class="rmb"></span><strong></strong></p>
+                    <p class="clearfix">
+                        <a href="../asd.html" class="fl a01" target="_blank">继续购物</a>
+                        <a href="javascript:;" class="fr a02">立即结算</a>
+                    </p>
+                </div>
+                <!-- 删除选中商品弹出层 -->
+                <div class="cartPop">
+                    <div class="close">×</div>
+                    <div class="arrow">
+                        <p></p>
+                    </div>
+                    <div class="popContent">
+                        <h3 class="clearfix">删除商品</h3>
+
+                        <div class="popText"></div>
+                        <div class="cbtns">
+                            <a class="btn11" href="javascript:;">确定</a>&nbsp;
+                            <a class="btn12" href="javascript:;">取消</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 删除按钮弹出层 -->
+                <div class="cartPop01">
+                    <div class="popText">您确定要删除吗？</div>
+                    <div class="cbtns">
+                        <a class="btn01" href="javascript:;">确定</a>&nbsp;
+                        <a class="btn02" href="javascript:;">取消</a>
+                    </div>
+                </div>
+                <!-- 空购物车 -->
+                <div class="nullCart">
+                    <div class="nullText">
+                        <p class="cText01">购物车内暂时没有商品，您可以：</p>
+                        <p class="cText02"><a href="../asd.html" class="a02">返回首页挑选商品</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //判断登录状态
+        $(function () {
+            if (getCookie('username')) {
+                $('.navLogin').html(getCookie('username') +
+                    '<a href="#" onclick="removeCookie(username)">退出</a>');
+            }
+        });
+
+        //渲染商品数据
+        $(function () {
+            // isok = false
+            var p = new Promise(function (resolve) {
+                $.ajax({
+                    type: 'get',
+                    url: '../api/cartlist.php',
+                    data: {
+                        name: getCookie('username'),
+                    },
+                    success: function (str) {
+                        // console.log(str);
+                        resolve(str);
+                    }
+                });
+            });
+
+            p.then(function (data) {
+                var arr = JSON.parse(data);
+                console.log(arr);
+                //渲染数据
+                var res = arr.map(function (item) {
+                    var xiaoji = (item.price * item.count).toFixed(2); //乘法计算时系统会将小数点去掉 需要转换
+                    return `
+                            <tr class="addChecked" name="cartRow" data-id="${item.id}" data-cid="${item.cid}"
+                                    data-count="${item.count}">
+                                    <td><input class="checkBox" value="${item.cid}" name="promotionId0" 
+                                            type="checkbox" checked=""></td>
+                                    <td width="97" valign="top">
+                                        <div class="cartPic fl padRight15">
+                                            <a href="xiangqingye.html?id=${item.cid}" target="_blank"><img src="../img/${item.url.split('@')[0]}" alt="${item.desc}" width="80" height="80"></a>
+                                        </div>
+                                    </td>
+                                    <td valign="top">
+                                        <div class="cartNames fl">
+                                            <p class="namePro"><a href="xiangqingye.html?id=${item.cid}" target="_blank">${item.desc}</a></p>
+                                        </div>
+                                        <div class="cartNames fl" style="overflow:visible">
+                                            <p class="namePro">
+                                                颜色：${item.color}&nbsp;&nbsp;
+                                                尺码：${item.size}&nbsp;&nbsp;
+                                            </p>
+
+                                        </div>
+                                    </td>
+                                    <td valign="top">美国</td>
+                                    <td valign="top"><span class="rmb">¥</span>${item.price}</td>
+                                    <td valign="top">
+                                        <div class="countNum clearfix">
+                                            <div class="cPlus fl">-</div>
+                                            <div class="cInput fl"><input class="Num" type="text" name="quantity" value="${item.count}" data-num="${item.stock}"></div>
+                                            <div class="cMinus fl">+</div>
+                                        </div>
+                                    </td>
+                                    <td valign="top" class="xiaoji">
+                                        <strong class="colore93"><span class="rmb colore93">¥</span>${xiaoji}</strong>
+                                    </td>
+                                    <td valign="top"><a href="javascript:;" class="del"
+                                            name="deleteRow">删除</a></td>
+                                </tr>
+                                `
+                }).join('');
+
+                $('#tbody').html(res)
+                all();
+                // 数据渲染结束
+                update();
+                //1.数量变化：加减数量、手动修改数量
+                //数量增加
+                $('#tbody').on('click', '.cMinus', function (event) {
+                    // console.log($(this).prev().children().first().val());
+                    var num = $(this).prev().children().first().val();
+                    // console.log($(this).parents('tr').data('cid'))
+                    var kuncun = $(this).prev().children().first().data('num'); //原生js叫dataset
+                    num++;
+                    if (num >= kuncun) { //设置上限
+                        $('<div class="colore93">库存不足</div>').insertAfter($('.countNum '))
+                        num = kuncun;
+                    } else {
+                        $('.countNum ').siblings().remove('div');
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '../api/countchange.php',
+                        data: {
+                            cid: $(this).parents('tr').data('cid'),
+                            name: getCookie('username'),
+                            count: num
+                        },
+                        success: function (str) {
+                            console.log('数据库修改' + str);
+                        }
+                    });
+                    $(this).prev().children().first().val(num);
+                    total($(this)); //刷新小计
+                    event.stopPropagation;
+                });
+                //数量减少
+                $('#tbody').on('click', '.cPlus', function (event) {
+                    //		console.log(789);
+                    var num = $(this).next().children().first().val();
+                    num--;
+                    if (num <= 1) { //设置下限
+                        num = 1;
+                    }
+                    $('.countNum ').siblings().remove('div');
+                    $.ajax({
+                        type: 'post',
+                        url: '../api/countchange.php',
+                        data: {
+                            cid: $(this).parents('tr').data('cid'),
+                            name: getCookie('username'),
+                            count: num
+                        },
+                        success: function (str) {
+                            console.log('数据库修改' + str);
+                        }
+                    });
+                    $(this).next().children().first().val(num);
+                    total($(this)); //刷新小计
+                    event.stopPropagation;
+                });
+
+                //手动输入的时候，改变数量
+                $('#tbody').on('input propertychange', '.Num', function () {
+                    // console.log(1);
+                    var num = $(this).val();
+                    var kuncun = $(this).data('num');
+                    if (num <= 1) {
+                        num = 1;
+                    } else if (num >= kuncun) {
+                        num = kuncun;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: '../api/countchange.php',
+                        data: {
+                            cid: $(this).parents('tr').data('cid'),
+                            name: getCookie('username'),
+                            count: num
+                        },
+                        success: function (str) {
+                            console.log('数据库修改' + str);
+                        }
+                    });
+                    $(this).val(num);
+                    total($(this)); //刷新小计
+                });
+
+                //小计的计算
+                function total(now) {
+                    //找到数量
+                    var num = $(now).parent().find('.Num').val();
+                    //找到单价
+                    var price = $(now).parent().parent().prev().text().slice(1);
+                    //小计=数量*单价
+                    var xiaoji = (num * price).toFixed(2);
+                    // console.log($(now).parent().parent().next().children().html('<span class="rmb colore93">¥</span>)' + xiaoji));
+                    $(now).parent().parent().next().children().html(
+                        '<span class="rmb colore93">¥</span>' + xiaoji);
+                    all();
+                }
+
+                //按单行删除弹出层
+                $('#tbody').on('click', '.del', function (ev) {
+                    $(".cartPop01").css({
+                        left: $(this).offset().left - 60,
+                        top: $(this).offset().top + 20
+                    }).show();
+                    var cid = $(this).parents('tr').attr('data-cid');
+                    // console.log(cid);
+                    $(".cartPop01").attr('data-cid', cid);
+                    event.stopPropagation;
+                });
+
+                //删除单行确认
+                $('.btn01').click(function () {
+                    var cid = $(this).parents('.cartPop01').attr('data-cid')
+                    // console.log($(`.addChecked`).filter(`[data-cid="${cid}"]`)
+                    // console.log(cid);
+                    $(`.addChecked`).filter(`[data-cid="${cid}"]`).remove();
+                    $(".cartPop01").hide();
+                    $.ajax({
+                        type: 'post',
+                        url: '../api/cartdelete.php',
+                        data: {
+                            cid: cid,
+                            name: getCookie('username')
+                        },
+                        success: function (str) {
+                            console.log('数据库修改' + str);
+                        }
+                    });
+                    update();
+                    all();
+                    return false;
+                });
+                $('.btn02').click(function () {
+                    $(".cartPop01").hide();
+                    return false;
+                });
+
+                //判断如果一个商品都没有了，就隐藏最后一行(统计总数量和总价的)
+                function update() {
+                    var len = $('.addChecked').length;
+                    // console.log(len);
+                    if (len == 0) {
+                        $('.cartPrice').hide();
+                        $('.nullCart').show();
+                        $('.cartNav').hide();
+                        $('.cartSlist').hide();
+                    } else {
+                        $('.cartPrice').show();
+                    }
+                }
+
+                //全选
+                $('#choseAll').click(function () {
+                    var istrue = $('#choseAll').prop('checked');
+                    $('.checkBox').prop('checked', istrue);
+                    $('#choseAll2').prop('checked', istrue);
+                    all();
+                });
+
+                $('#choseAll2').click(function () {
+                    var istrue = $('#choseAll2').prop('checked');
+                    $('.checkBox').prop('checked', istrue);
+                    $('#choseAll').prop('checked', istrue);
+                    all();
+                });
+
+                //计算总数量和总价格
+                var arr = [];
+
+                function all() {
+
+                    arr = []; //存被勾选的复选框的下标
+
+                    $('.checkBox').each(function (i, item) {
+                        if ($(item).prop('checked')) {
+                            //被勾选了，把下标存起来
+                            arr.push(i);
+                        }
+                    });
+
+                    //总数量
+                    let num = 0;
+                    //总价格
+                    let price = 0;
+
+                    arr.forEach(function (item) {
+                        num += $('.Num').eq(item).val() * 1;
+                        price += $('.xiaoji').eq(item).text().replace(/\s/g, "").slice(1) * 1;
+                        // console.log($('.xiaoji').eq(item).text().replace(/\s/g, "").slice(1) * 1);
+                    });
+
+                    // console.log(num, price.toFixed(2));
+
+                    //渲染到节点
+                    $('.cartPrice p').eq(0).html('商品数量总计：' + num + '件');
+                    // 商品金额总计（不含税金和运费）：<span class="rmb"></span><strong>348.00</strong>
+                    $('.totalPriceBottom').html('商品金额总计（不含税金和运费）：<span class="rmb"></span><strong>' +
+                        price.toFixed(2) + '</strong>');
+                    $('.popText').html('确定从购物车中删除所选中的' + num + '件商品？');
+                }
+                //点击复选框反过来控制全选按钮
+                $('#tbody').on('click', '.checkBox', function (event) {
+                    var len = $('.checkBox:checked').length;
+                    var total = $('.checkBox').length;
+                    if (len == total) {
+                        //全都勾选了
+                        $('#choseAll').prop('checked', true);
+                    } else {
+                        $('#choseAll').prop('checked', false);
+                    }
+                    all(); //刷新总数量和总价格
+                    event.stopPropagation;
+                });
+
+                //点击删除选中商品弹出层
+                $('.ano02').click(function (event) {
+                    $('.cartPop').css({
+                        left: $(this).offset().left + 20,
+                        top: $(this).offset().top + 20
+                    }).show();
+                    event.stopPropagation;
+                });
+                //确认删除选中商品
+                $('.btn11').click(function (event) {
+                    $('.cartPop').hide();
+                    arr = []; //存被勾选的复选框的下标
+                    $('.checkBox').each(function (i, item) {
+                        if ($(item).prop('checked')) {
+                            //被勾选了，把下标存起来
+                            arr.push(i);
+                        }
+                    });
+                    var arr_re = arr.reverse(); //颠倒数组顺序，从后往前删除节点
+
+                    arr_re.forEach(function (item) {
+                        cid = $('tr.addChecked').eq(item).data('cid');
+                        console.log(cid);
+                        $.ajax({
+                            type: 'post',
+                            url: '../api/cartdelete.php',
+                            data: {
+                                cid: cid,
+                                name: getCookie('username')
+                            },
+                            success: function (str) {
+                                console.log('数据库修改' + str);
+                            }
+                        });
+                        $('tr.addChecked').eq(item).remove();
+                    });
+                    event.stopPropagation;
+                    all(); //刷新总数量和总价格
+                    update();
+                });
+
+                $('.btn12').click(function (event) {
+                    $('.cartPop').hide();
+                    event.stopPropagation;
+                });
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

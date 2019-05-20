@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>寺库网用户登录_免费注册_手机注册 – 寺库网</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <script src="../js/jquery-3.4.0.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/gVerify.js"></script>
+
+    <script>
+        // 登录方式选项卡功能
+        $(function () {
+            $('.login_box_title').on('click', 'li', function (ev) {
+                var target = $(ev.target);
+                $('.login_box_title').children().removeClass('on');
+                target.addClass('on');
+                show(target);
+            });
+            var show = function (ev) {
+                $('.login_box_cont>div')
+                    .eq($(ev).index())
+                    .css('display', 'block')
+                    .siblings()
+                    .css('display', 'none');
+            }
+        });
+
+        // 记住账号功能
+        $(function () {
+            $('#loginButton').on('click', function () {
+                var username_val = $('.username').val();
+                if ($('.remember').prop('checked')) {
+                    setCookie('remembername', username_val, 7);
+                }
+            });
+        });
+        // jq中只能用prop()的方法获取和改变Input的checked属性和值，attr不行
+        // 如果有记住账号，则填充账号
+        $(function () {
+            if (getCookie('remembername')) {
+                $('.username').val(getCookie('remembername'));
+                $('.remember').prop('checked', true);
+            } else {
+                $('.remember').prop('checked', false);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div id="header">
+        <div class="container clearfix">
+            <div class="con_left fl">
+                <img src="../img/logo.png" alt="">
+            </div>
+            <div class="con_right fr">
+                <a href="../index.min.html" target="_blank">寺库首页</a>
+                <a href="javascript:;">收藏寺库</a>
+                <a href="javascript:">寺库APP</a>
+            </div>
+        </div>
+    </div>
+    <!-- 中部 -->
+    <div id="content">
+        <div class="login_center clearfix">
+            <div class="login_in fr">
+                <div class="login_box">
+                    <ul class="login_box_title">
+                        <li class="on">扫码登录</li>
+                        <li>密码登录</li>
+                    </ul>
+                    <div class="login_box_cont">
+                        <div id="box" style="display:block;">
+                            <div class="ewmbox">
+                                <img src="../img/show.png" alt="">
+                            </div>
+                            <p class="textts">打开<a href="http://www.secoo.com/special/sikuApp.shtml"
+                                    target="_blank">寺库app</a>扫一扫登录</p>
+                        </div>
+                        <div id="box2" style="display:none">
+                            <input type="text" class="username" placeholder="用户名/邮箱/手机号">
+                            <input type="password" class="psw" placeholder="密码">
+                            <div class="yanzhengma_show clearfix" style="display:none;">
+                                <div class="regTips clearfix">
+                                    <span class="t_right">验证码:</span>
+                                </div>
+                                <input id="kaptcha" class="fl reg_ins reg_in" type="text" tabindex="2">
+                                <a class="fl" href="javascript:;" id="v_container">
+                                    <!-- <canvas id="verifyCanvas" width="80" height="40" style="cursor: pointer;"></canvas> -->
+                                </a>
+                                <a class="change fl" onclick="register.changenCheckCode()" href="javascript:;">换一换</a>
+                            </div>
+                            <label><input type="checkbox" class="remember">记住账号</label>
+                            <div class="btn_submit">
+                                <input id="loginButton" class="login_btn" name="" type="button" value="立即登录"
+                                    tabindex="3">
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="jiathis">
+                    <p>使用合作网站账号登录</p>
+                    <p>
+                        <a style="display: inline-block; width: 50px; height: 25px; cursor: pointer;"
+                            onclick="login.qqLogin()">
+                            <img src="../img/qq.jpg" alt="QQ登录">
+                            <span style="margin-left: 5px;">QQ</span>
+                        </a>
+                        <a style="display: inline-block; width: 60px; height: 25px; cursor: pointer;"
+                            onclick="login.weixinLogin()">
+                            <img src="../img/WeChat.png" alt="微信登录" style="height: 24px;">
+                            <span style="margin-left: 5px;">微信</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="reg clearfix">
+                    <span class="fl">还不是寺库会员？<a href="regsiter.html" target="_blank" class="active">免费注册</a></span>
+                    <span class="fr"><a href="javascript:;">忘记密码？</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var yanzhengma = false;
+        // 登录验证
+        if (getCookie('username')) {
+            alert('您已登录');
+            location.href = '../asd.html';
+        }
+
+        // 图片验证码
+        var verifyCode = new GVerify("v_container");
+        $('.username').on('blur', function () {
+            $('.yanzhengma_show').css('display', 'list-item');
+        });
+        $('#kaptcha').on('blur', (function () {
+            let isOk = verifyCode.validate($('#kaptcha').val());
+            // console.log(isOk);
+            if (isOk) {
+                $(".reg_userName").hide();
+                $('#kaptcha').removeClass('blur_error');
+                yanzhengma = true;
+                return false;
+            } else {
+                $(".reg_userName").html("图片验证码错误").addClass('blur').removeClass("focus f14")
+                    .show();
+                $('#kaptcha').addClass('blur_error');
+                yanzhengma = false;
+                return false;
+            }
+        }));
+        // 回车键登录
+        $('.psw').keydown(function (event) {
+            if (event.keyCode == "13") { //keyCode=13是回车键
+                $('#loginButton').click();
+            }
+        });
+        // 点击登录
+        $('#loginButton').on('click', function () {
+            if (yanzhengma) {
+                $.ajax({
+                    type: "post",
+                    url: "../api/login.php",
+                    data: {
+                        name: $('.username').val(),
+                        psw: $('.psw').val()
+                    },
+                    success: function (response) {
+                        var username_val = $('.username').val();
+                        if (response == 'yes') {
+                            location.href = '../asd.html';
+                            setCookie('username', username_val, 1);
+                        } else {
+                            alert('登录失败！请检查用户名或密码是否正确！');
+                        }
+                    }
+                });
+            }else{
+                alert('验证码错误！');
+            }
+        });
+    </script>
+</body>
+
+</html>
